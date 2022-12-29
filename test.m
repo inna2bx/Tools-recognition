@@ -15,3 +15,5 @@ test_predicted = predict(knn, test.lbp);
 cm_test = confmat(test.labels, test_predicted);
 
 show_confmat(cm_test.cm_raw, cm_test.labels);
+
+save('Saved Data\classificator.mat', 'knn');
