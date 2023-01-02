@@ -26,10 +26,10 @@ for j = 233:10 + 233
 
     labels = bwlabel(mask);
     
+    current_label = 1;
     for i=1:max(unique(labels))
         region_n = labels==i;
         area = sum(sum(region_n));
-        current_label = 1;
         if area> numel(im_gray) * 0.05
             labels(region_n) = current_label;
             current_label = current_label + 1;
