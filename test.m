@@ -3,7 +3,7 @@ close all;
 
 load('Saved Data\trts.mat');
 
-knn = fitcknn(train.lbp, train.labels);
+knn = fitcknn(train.lbp, train.labels, 'NumNeighbors', 1);
 
 
 train_predicted = predict(knn, train.lbp);

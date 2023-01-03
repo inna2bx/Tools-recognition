@@ -12,6 +12,9 @@ addpath('Descriptors\');
 %process data
 n = numel(images);
 
+IoUs = zeros(n, 1, 'double');
+ratios_bboxes = zeros(n, 1, 'double');
+
 for j = 1:n
     
     im = imread([images{j}]);
@@ -25,11 +28,15 @@ for j = 1:n
     im_gray_resized = rgb2gray(im_resized);
     otsu_t = graythresh(im_gray_resized);
     
-    mask = im2bw(im_gray_resized, otsu_t);
+    mask = sauvola(im_gray_resized, [50,75]);
+    %mask = im2bw(im_gray_resized, otsu_t);
     
     if sum(mask(:)) > numel(mask)/2
         mask = not(mask);
     end
+
+    es = strel("disk", 10);
+    mask = imclose(mask, es);
 
     labels = bwlabel(mask);
     
@@ -72,7 +79,8 @@ for j = 1:n
     
     gt = gTruth.LabelData(j,:);
     [IoU, ratio_bboxes] = bboxes_metric(crops, gt, im);
-    disp([IoU, ratio_bboxes]);
+    IoUs(j) = IoU;
+    ratios_bboxes(j) = ratio_bboxes;
     
     %classification
     for i = 1:numel(crops)
@@ -82,11 +90,16 @@ for j = 1:n
         
         label_predict = predict(knn, lbp);
 
-        figure();
-        imshow(crop.img), title(label_predict);
+         %figure();
+         %imshow(crop.img), title(label_predict);
     end
 
 end
+disp('---------------------------------');
+disp(IoUs);
+disp(ratios_bboxes);
+disp(sqrt(mean((IoUs-1).^2)));
+disp(sqrt(mean((ratios_bboxes-1).^2)));
 
 
 rmpath('Descriptors\');
