@@ -1,24 +1,31 @@
 clear all;
 close all;
 
-[images, o, p] = readlists();
+%load data
+load('Saved Data\GT-multiobject.mat');
+
+images = gTruth.DataSource.Source;
 
 load('Saved Data\classificator.mat');
 addpath('Descriptors\');
 
+%process data
 n = numel(images);
 
-for j = 233:10 + 233
+for j = 1:n
     
     im = imread([images{j}]);
 
     %preprocessing
-
-
-    im_gray = rgb2gray(im);
-    otsu_t = graythresh(im_gray);
     
-    mask = im2bw(im_gray, otsu_t);
+    
+    %segmentation
+    RESIZE_FACTOR = 0.1;
+    im_resized = imresize(im, RESIZE_FACTOR);
+    im_gray_resized = rgb2gray(im_resized);
+    otsu_t = graythresh(im_gray_resized);
+    
+    mask = im2bw(im_gray_resized, otsu_t);
     
     if sum(mask(:)) > numel(mask)/2
         mask = not(mask);
@@ -30,7 +37,7 @@ for j = 233:10 + 233
     for i=1:max(unique(labels))
         region_n = labels==i;
         area = sum(sum(region_n));
-        if area> numel(im_gray) * 0.05
+        if area> numel(im_gray_resized) * 0.005
             labels(region_n) = current_label;
             current_label = current_label + 1;
         else
@@ -40,8 +47,10 @@ for j = 233:10 + 233
     
     
     figure();
-    imagesc(labels), axis image, colorbar;
-
+    subplot(1,2,1); imshow(mask), title('immagine ' + string(j));
+    subplot(1,2,2); imagesc(labels), axis image, colorbar;
+    
+    %extrating bounding boxes
     crops = [];
     for i=1:max(unique(labels))
         current_label = labels == i;
@@ -52,12 +61,20 @@ for j = 233:10 + 233
         cmin = min(c);
         w = cmax-cmin;
         h = rmax-rmin;
-        img_crop = imcrop(im,[cmin rmin w h]);
+
+        crop.bbox = [cmin, rmin, w, h] ./ RESIZE_FACTOR;
+        img_crop = imcrop(im, crop.bbox);
+        
         crop.img = img_crop;
-        crop.box = [cmin, rmin, w, h];
+
         crops = [crops, crop];
     end
-
+    
+    gt = gTruth.LabelData(j,:);
+    [IoU, ratio_bboxes] = bboxes_metric(crops, gt, im);
+    disp([IoU, ratio_bboxes]);
+    
+    %classification
     for i = 1:numel(crops)
         crop = crops(i);
         crop_img_gray = rgb2gray(crop.img);
