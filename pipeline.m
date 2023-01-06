@@ -28,15 +28,16 @@ for j = 1:n
     im_gray_resized = rgb2gray(im_resized);
     otsu_t = graythresh(im_gray_resized);
     
-    mask = sauvola(im_gray_resized, [50,75]);
+    %mask = sauvola(im_gray_resized, [50,75]);
     %mask = im2bw(im_gray_resized, otsu_t);
+    mask = uniformBGEdgeSegmentation(im_gray_resized);
     
-    if sum(mask(:)) > numel(mask)/2
-        mask = not(mask);
-    end
+%     if sum(mask(:)) > numel(mask)/2
+%         mask = not(mask);
+%     end
 
-    es = strel("disk", 10);
-    mask = imclose(mask, es);
+%     es = strel("disk", 10);
+%     mask = imclose(mask, es);
 
     labels = bwlabel(mask);
     
@@ -90,8 +91,8 @@ for j = 1:n
         
         label_predict = predict(knn, lbp);
 
-         %figure();
-         %imshow(crop.img), title(label_predict);
+         figure();
+         imshow(crop.img), title(label_predict);
     end
 
 end
