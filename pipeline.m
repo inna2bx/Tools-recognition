@@ -4,7 +4,10 @@ close all;
 %load data
 load('Saved Data\GT-multiobject.mat');
 
-images = gTruth.DataSource.Source;
+f=fopen('List Files\images-multiobject.list');
+  z = textscan(f,'%s');
+  images = z{:}; 
+  fclose(f);
 
 load('Saved Data\classificator.mat');
 addpath('Descriptors\');
@@ -12,32 +15,36 @@ addpath('Descriptors\');
 %process data
 n = numel(images);
 
-IoUs = zeros(n, 1, 'double');
-ratios_bboxes = zeros(n, 1, 'double');
+IoUs = zeros(1, n, 'double');
+ratios_bboxes = zeros(1, n, 'double');
 
 for j = 1:n
     
     im = imread([images{j}]);
+    [r,c] = size(im, [1,2]);
 
     %preprocessing
-    
+   
     
     %segmentation
     RESIZE_FACTOR = 0.1;
-    im_resized = imresize(im, RESIZE_FACTOR);
+    resized_im_size = [floor(RESIZE_FACTOR*r), floor(RESIZE_FACTOR*c)];
+    im_resized = imresize(im, resized_im_size);
+
     im_gray_resized = rgb2gray(im_resized);
     otsu_t = graythresh(im_gray_resized);
     
-    %mask = sauvola(im_gray_resized, [50,75]);
-    %mask = im2bw(im_gray_resized, otsu_t);
+%     mask = sauvola(im_gray_resized, [50,75]);
+%     mask = im2bw(im_gray_resized, otsu_t);
     mask = uniformBGEdgeSegmentation(im_gray_resized);
+    mask = not(mask);
     
-%     if sum(mask(:)) > numel(mask)/2
+%     if sum(mask(:)) > numel(mask)/1.5
 %         mask = not(mask);
 %     end
 
-%     es = strel("disk", 10);
-%     mask = imclose(mask, es);
+    es = strel("disk", 10);
+    mask = imclose(mask, es);
 
     labels = bwlabel(mask);
     
@@ -54,9 +61,9 @@ for j = 1:n
     end
     
     
-    figure();
-    subplot(1,2,1); imshow(mask), title('immagine ' + string(j));
-    subplot(1,2,2); imagesc(labels), axis image, colorbar;
+%     figure();
+%     subplot(1,2,1); imshow(mask), title('immagine ' + string(j));
+%     subplot(1,2,2); imagesc(labels), axis image, colorbar;
     
     %extrating bounding boxes
     crops = [];
@@ -69,6 +76,7 @@ for j = 1:n
         cmin = min(c);
         w = cmax-cmin;
         h = rmax-rmin;
+        
 
         crop.bbox = [cmin, rmin, w, h] ./ RESIZE_FACTOR;
         img_crop = imcrop(im, crop.bbox);
@@ -78,8 +86,7 @@ for j = 1:n
         crops = [crops, crop];
     end
     
-    gt = gTruth.LabelData(j,:);
-    [IoU, ratio_bboxes] = bboxes_metric(crops, gt, im);
+    [IoU, ratio_bboxes] = bboxes_metric(crops, gt(j,:), im);
     IoUs(j) = IoU;
     ratios_bboxes(j) = ratio_bboxes;
     
@@ -91,14 +98,14 @@ for j = 1:n
         
         label_predict = predict(knn, lbp);
 
-         figure();
-         imshow(crop.img), title(label_predict);
+%          figure();
+%          imshow(crop.img), title(label_predict);
     end
 
 end
 disp('---------------------------------');
-disp(IoUs);
-disp(ratios_bboxes);
+% disp(IoUs);
+% disp(ratios_bboxes);
 disp(sqrt(mean((IoUs-1).^2)));
 disp(sqrt(mean((ratios_bboxes-1).^2)));
 

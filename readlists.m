@@ -1,4 +1,4 @@
-function [images, labels, back_grounds]=readlists()
+function [images, labels, back_grounds] = readlists()
   f=fopen('List Files\images.list');
   z = textscan(f,'%s');
   fclose(f);
