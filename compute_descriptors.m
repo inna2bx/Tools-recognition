@@ -1,22 +1,11 @@
-clear all;
-close all;
-
-addpath('Descriptors');
-
-load('Saved Data\data.mat');
-n = numel(images);
-
-lbp = [];
-qhist = [];
-cedd = [];
-
-for j = 1:n
-    im = imread([images{j}]);
-    lbp = [lbp; compute_lbp(rgb2gray(im))];
-    qhist = [qhist; compute_qhist(im)];
-    cedd = [cedd; compute_CEDD(im)];
+function out = compute_descriptors(image)
+  
+    addpath('Descriptors');
+    
+    out.lbp = compute_lbp(rgb2gray(image));
+    out.qhist = compute_qhist(image);
+    out.cedd = compute_CEDD(image);
+    out.descriptors = [out.lbp, out.qhist, out.cedd];
+    
+    rmpath('Descriptors\');
 end
-
-save('Saved Data\descriptors.mat','lbp',"qhist","cedd");
-
-rmpath('Descriptors');

@@ -1,4 +1,7 @@
-function [out, sfondo] = compositeBGEdgeSegmentation(gray)
+function [out, sfondo] = compositeBGEdgeSegmentation(im)
+addpath("Segmentation_subroutines\");
+
+gray = rgb2gray(im);
 [r,c] = size(gray);
 sz = r.*c;
 tmp = uniformBGEdgeSegmentation(gray);
@@ -14,5 +17,6 @@ if(test>fac.*sz)
         sfondo = "tovaglia";
     end
 end
+rmpath("Segmentation_subroutines\");
 out = tmp;
 
