@@ -40,7 +40,7 @@ nlabels = max(unique(labels));
 for i = 1:nlabels
     tmp = labels==i;
     ni = sum(sum(tmp));
-    if ni<800
+    if ni<3000
         edges(labels==i)=0;
     end
 end
