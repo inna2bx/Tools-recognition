@@ -4,8 +4,7 @@ close all;
 %debug flags
 IOU = true;
 PRINT_SEGMENTATION = true;
-PRINT_CLASSIFICATION = true;
-
+PRINT_CLASSIFICATION = false;
 
 %load data
 load('Saved Data\GT-multiobject.mat');
@@ -38,11 +37,13 @@ for j = 1:n
         subplot(2,2,1); imshow(im), title('immagine ' + string(j));
         subplot(2,2,3); imshow(mask);
         subplot(2,2,4); imagesc(labels), axis image, colorbar;
+        saveas(gcf,'export/segmentation'+string(j)+'.png')
     end
     
     %extrating bounding boxes
     s = regionprops(labels, "BoundingBox");
     bboxes = floor(cat(1, s.BoundingBox));
+    bboxes = bboxes+[1,1,-1,-1];
     
     if IOU
         [IoU, ratio_bboxes] = bboxes_metric(bboxes, gt(j,:), im);
@@ -52,13 +53,15 @@ for j = 1:n
     
     
 
-    %classification
+    classification
     for i = 1:numel(bboxes(:,1))
         crop = imcrop(im, bboxes(i,:));
-        crop_img_gray = rgb2gray(crop);
-        lbp = compute_lbp(crop_img_gray);
+        d = struct2table(compute_descriptors(crop));
         
-        label_predict = predict(knn, lbp);
+        descriptors = {'lbp','cedd'};
+        descriptors = table2array(d(:, descriptors));
+
+        label_predict = predict(knn, descriptors);
         
         if PRINT_CLASSIFICATION
             figure();
