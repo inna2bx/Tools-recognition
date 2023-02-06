@@ -52,7 +52,6 @@ for j = 1:n
             figure();
             imshow(crop), title(label_predicted);
         end
-        close all;
     end
     
 end
