@@ -4,7 +4,7 @@ addpath("Segmentation_subroutines\");
 gray = rgb2gray(im);
 [r_original,c_original] = size(gray);
 resize_factor = 2500 / sqrt(r_original^2+c_original^2);
-resize_factor = 0.25;
+%resize_factor = 0.25;
 gray = imresize(gray,resize_factor);
 
 [r,c] = size(gray);

@@ -5,10 +5,10 @@ addpath('Utils');
 load('Saved Data\trts.mat');
 
 
-descriptors = {'lbp','cedd'};
+descriptors = {'lbp','cedd','qhist'};
 
 train_array_descriptors = table2array(train.descriptors(:, descriptors));
-knn = fitcknn(train_array_descriptors, train.labels, 'NumNeighbors', 10);
+knn = fitcknn(train_array_descriptors, train.labels, 'NumNeighbors', 1);
 
 
 train_predicted = predict(knn, train_array_descriptors);

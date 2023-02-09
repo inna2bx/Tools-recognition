@@ -32,9 +32,10 @@ function out = pipeline(im)
     predictions = cell([1,n_bboxes]);
     for i = 1:n_bboxes
         crop = imcrop(im, bboxes(i,:));
-        d = struct2table(compute_descriptors(crop));
+        crop_mask = imcrop(labels == i, bboxes(i,:))
+        d = struct2table(compute_descriptors(crop, crop_mask));
         
-        descriptors = {'lbp','cedd'};
+        descriptors = {'lbp','cedd','qhist'};
         descriptors = table2array(d(:, descriptors));
 
         label_predict = predict(knn, descriptors);
