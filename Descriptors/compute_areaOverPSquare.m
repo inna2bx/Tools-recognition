@@ -1,4 +1,4 @@
-function x = area_su_Pquadro(bwImage)
+function x = compute_areaOverPSquare(bwImage)
     [m, n] = size(bwImage);
     filter = [1 1 1;
               1 1 1;

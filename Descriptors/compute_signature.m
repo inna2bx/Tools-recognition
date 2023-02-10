@@ -1,4 +1,4 @@
-function s = signature(bwImage)
+function s = compute_signature(bwImage)
     stats = regionprops(bwImage, 'Centroid');
     c = stats.Centroid;
     boundary = bwboundaries(bwImage);
@@ -10,7 +10,14 @@ function s = signature(bwImage)
     %spazio lineare da 0 a 360 con numero di punti equivalente al numero di
     %punti nella boundry
     l = linspace(0, 360, length(dist));
-    s(:, 1) = dist;
-    %s(:, 2) = l * pi / 180;
-    s(:, 2) = l;
+    s = zeros([360, 1]);
+    x = 0;
+    s(1) = dist(1);
+    for i = 2:length(dist)
+        if floor(l(i)) == x + 1
+            x = x + 1;
+            s(x + 1) = dist(i);
+        end
+    end
+    s = rescale(s);
 end
