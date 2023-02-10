@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-DATASET = 'full';
+DATASET = 'segmentable';
 
 addpath('Utils');
 load('Saved Data\trts'+DATASET+'.mat');

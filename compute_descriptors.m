@@ -14,7 +14,7 @@ function out = compute_descriptors(image, mask)
     out.areaMinRectangle = compute_areaMinRectangle(mask);
     out.areaOverPSquare = compute_areaOverPSquare(mask);
     out.HuMoments = compute_HuMoments(mask);
-    [out.projection_x, out.projection_y] = compute_projection(mask);
+%     [out.projection_x, out.projection_y] = compute_projection(mask);
     out.signature = compute_signature(mask);
     
     
