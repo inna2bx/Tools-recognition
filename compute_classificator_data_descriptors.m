@@ -11,7 +11,7 @@ n = numel(images);
 for j = 1:n
     disp(string(j) + ' - ' + string(n));
     im = imread([images{j}]);
-    [mask, bg] = newCompositeBGEdgeSegmentation(im);
+    [mask, bg] = compositeBGEdgeSegmentation(im);
 
     mask_labels = bwlabel(mask);
 

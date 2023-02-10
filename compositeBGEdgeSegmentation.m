@@ -3,8 +3,7 @@ addpath("Segmentation_subroutines\");
 
 gray = rgb2gray(im);
 [r_original,c_original] = size(gray);
-resize_factor = 2500 / sqrt(r_original^2+c_original^2);
-%resize_factor = 0.25;
+resize_factor = 1500 / sqrt(r_original^2+c_original^2);
 gray = imresize(gray,resize_factor);
 
 [r,c] = size(gray);
@@ -14,16 +13,15 @@ sfondo = "uniforme";
 test = sum(sum(tmp));
 fac = 60/100;
 if(test>fac.*sz)
-    tmp = checkersBGEdgeSegmentation(gray);
+    tmp = tovagliaBGEdgeSegmentation(gray);
     test = sum(sum(tmp));
-    sfondo = "piastrelle";
+    sfondo = "tovaglia";
     if(test>fac.*sz)
-        tmp = tovagliaBGEdgeSegmentation(gray);
-        sfondo = "tovaglia";
+        tmp = checkersBGEdgeSegmentation(gray);
+        sfondo = "piastrelle";
     end
 end
 rmpath("Segmentation_subroutines\");
 
 tmp = imresize(tmp,[r_original,c_original],"nearest");
 out = tmp;
-

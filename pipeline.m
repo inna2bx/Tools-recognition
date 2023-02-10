@@ -14,7 +14,7 @@ function out = pipeline(im)
    
     
     %segmentation
-    [mask, bg] = newCompositeBGEdgeSegmentation(im);
+    [mask, bg] = compositeBGEdgeSegmentation(im);
     labels = bwlabel(mask);
     
     out.segmentation = mask;

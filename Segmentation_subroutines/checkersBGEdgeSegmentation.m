@@ -1,32 +1,38 @@
-function out = checkersBGEdgeSegmentation(gray)
-gray = medfilt2(gray,[15,15]);
-edges = edge(gray,"zerocross",0.0005);
-nhood = [1 1 1 1 1 1];
-mask = imopen(edges,nhood);
-edges = edges-mask;
-nhood = [1;1;1;1;1;1];
-mask = imopen(edges,nhood);
-edges = edges-mask;
-labels = bwlabel(edges);
-labels = labels + 1;
+function out = newCheckersBGEdgeSegmentation(gray)
+fil = fspecial("average",[3 3]);
+gray = imfilter(gray,fil);
+
+edges = edge(gray,"zerocross",0.00001);
+
+
+str = strel("disk",2);
+edges = imclose(edges,str);
+labels = bwlabel(edges,4);
 nlabels = max(unique(labels));
-massimo = 0;
-indexm = 0;
-for k = 1:nlabels
-    tmp = labels == k;
-    nk = sum(sum(tmp));
-    if nk > massimo
-        massimo = nk;
-        indexm = k;
-    end
-    if nk < 40
+for i = 1:nlabels
+    tmp = labels==i;
+    ni = sum(sum(tmp));
+    if ni<2000
         labels(tmp)=0;
     end
 end
-labels(labels == indexm)=0;
-edges = labels >0;
-labels = bwlabel(edges);
-[r c] = size(edges);
+ris = labels>0;
+ris = not(ris);
+
+str = strel("disk",6);
+ris = imopen(ris,str);
+ris = imdilate(ris,str);
+labels = bwlabel(ris,4);
+nlabels = max(unique(labels));
+for i = 1:nlabels
+    tmp = labels==i;
+    ni = sum(sum(tmp));
+    if ni<5500
+        labels(tmp)=0;
+    end
+end
+
+[r c] = size(labels);
 for i = 1:r
     if labels(i,1) ~= 0
         lab = labels(i,1);
@@ -55,10 +61,4 @@ for i = 1:c
         labels(labels == lab) = 0;
     end
 end
-
-
-str = strel("disk",25,6);
-tmp = imdilate(edges,str);
-str = strel("square", 30);
-%tmp = imerode(tmp,str);
-out = tmp;
+out = labels>0;
