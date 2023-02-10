@@ -3,6 +3,8 @@ close all;
 
 DATASET = "segmentable";
 
+SAVE_SEGMENTATION = true;
+
 load('Saved Data\data_'+DATASET+'.mat');
 load('Saved Data\partition_'+DATASET+'.mat');
 
@@ -27,13 +29,24 @@ for j = 1:n
         end
     end
     
+    if SAVE_SEGMENTATION
+        fig = figure();
+        fig.WindowState = 'maximized';
+        subplot(2,2,1); imshow(im), title('immagine ' + string(j));
+        subplot(2,2,2); imagesc(mask_labels), axis image, colorbar;
+        subplot(2,2,3); imshow(max_label);
+        subplot(2,2,4); imshow(uint8(max_label).*im);
+        saveas(gcf,'export/segmentation_dataset'+string(j)+'.png')
+        close all;
+    end
+
     s = regionprops(max_label, "BoundingBox");
     bboxe = floor(cat(1, s.BoundingBox));
     if numel(bboxe) ~= 0
         bboxe = bboxe+[1,1,-1,-1];
         im_crop = imcrop(im, bboxe);
         mask_crop = imcrop(max_label, bboxe);
-
+    
         d = compute_descriptors(im_crop, mask_crop);
     else
         d = compute_descriptors(im, mask);
