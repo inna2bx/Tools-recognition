@@ -2,12 +2,12 @@ clear all;
 close all;
 
 %debug flags
-IOU = true;
-PRINT_SEGMENTATION = true;
-SAVE_SEGMENTATION = true;
-PRINT_CLASSIFICATION = true;
-SAVE_CLASSIFICATION = true;
-CLOSE_WINDOWS = true;
+IOU = false;
+PRINT_SEGMENTATION = false;
+SAVE_SEGMENTATION = false;
+PRINT_CLASSIFICATION = false;
+SAVE_CLASSIFICATION = false;
+CLOSE_WINDOWS = false;
 
 %load data
 load('Saved Data\GT-multiobject.mat');

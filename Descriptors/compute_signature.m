@@ -19,5 +19,5 @@ function s = compute_signature(bwImage)
             s(x + 1) = dist(i);
         end
     end
-    s = rescale(s);
+    s = rescale(s).';
 end
