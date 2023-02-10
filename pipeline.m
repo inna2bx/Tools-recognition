@@ -14,7 +14,7 @@ function out = pipeline(im)
    
     
     %segmentation
-    [mask, bg] = compositeBGEdgeSegmentation(im);
+    [mask, bg] = newCompositeBGEdgeSegmentation(im);
     labels = bwlabel(mask);
     
     out.segmentation = mask;
@@ -23,16 +23,17 @@ function out = pipeline(im)
     %extrating bounding boxes
     s = regionprops(labels, "BoundingBox");
     bboxes = floor(cat(1, s.BoundingBox));
-    bboxes = bboxes+[1,1,-1,-1];
+    if numel(bboxes) ~= 0
+        bboxes = bboxes+[1,1,-1,-1];
+    end
     
     out.bboxes = bboxes;
     
-    
-    n_bboxes = numel(bboxes(:,1));
+    n_bboxes = numel(bboxes(:))/4;
     predictions = cell([1,n_bboxes]);
     for i = 1:n_bboxes
         crop = imcrop(im, bboxes(i,:));
-        crop_mask = imcrop(labels == i, bboxes(i,:))
+        crop_mask = imcrop(labels == i, bboxes(i,:));
         d = struct2table(compute_descriptors(crop, crop_mask));
         
         descriptors = {'lbp','cedd','qhist'};

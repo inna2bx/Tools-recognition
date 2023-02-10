@@ -2,7 +2,7 @@ function  [IoU, ratio_bboxes] = bboxes_metric(bboxes, gt, im)
     [r,c] = size(im, [1,2]);
 
     bboxes_area = zeros(r,c, 'logical');
-    n_bboxes = numel(bboxes(:,1));
+    n_bboxes = numel(bboxes(:))/4;
     
     gt_area = zeros(r,c, 'logical');
     n_gt_bboxes = 0;
