@@ -1,8 +1,10 @@
 clear all;
 close all;
 
-load('Saved Data\data.mat');
-load("Saved Data\partition.mat");
+DATASET = "segmentable";
+
+load('Saved Data\data_'+DATASET+'.mat');
+load('Saved Data\partition_'+DATASET+'.mat');
 
 n = numel(images);
 
@@ -11,13 +13,13 @@ for j = 1:n
     im = imread([images{j}]);
     [mask, bg] = newCompositeBGEdgeSegmentation(im);
 
-    labels = bwlabel(mask);
+    mask_labels = bwlabel(mask);
 
     max_area = 0;
     max_label = 0;
 
-    for i = 1:max(labels(:))
-        current_label = labels == i;
+    for i = 1:max(mask_labels(:))
+        current_label = mask_labels == i;
         current_area = sum(current_label(:));
         if current_area>max_area
             max_area = current_area;
@@ -50,4 +52,4 @@ test.images = images(test_list);
 test.labels = labels(test_list);
 test.descriptors = descriptors(test_list, :);
 
-%save('Saved Data\trts.mat', "train", "test");
+save('Saved Data\trts_'+DATASET+'.mat', "train", "test");

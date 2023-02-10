@@ -1,8 +1,10 @@
 clear all;
 close all;
 
+DATASET = 'full';
+
 addpath('Utils');
-load('Saved Data\trts.mat');
+load('Saved Data\trts'+DATASET+'.mat');
 
 
 descriptors = {'lbp','cedd','qhist'};
@@ -22,6 +24,6 @@ cm_test = confmat(test.labels, test_predicted);
 
 show_confmat(cm_test.cm_raw, cm_test.labels);
 
-save('Saved Data\classificator.mat', 'knn');
+save('Saved Data\classificator.mat', 'classificator');
 
 rmpath('Utils');

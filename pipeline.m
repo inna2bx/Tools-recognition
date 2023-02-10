@@ -39,7 +39,7 @@ function out = pipeline(im)
         descriptors = {'lbp','cedd','qhist'};
         descriptors = table2array(d(:, descriptors));
 
-        label_predict = predict(knn, descriptors);
+        label_predict = predict(classificator, descriptors);
         predictions(i) = label_predict;
         
     end
