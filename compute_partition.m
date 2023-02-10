@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-[images, labels, back_grounds] = readlists();
+load("Saved Data\data.mat");
 
 
 cv = cvpartition(labels, 'holdout', 0.2);

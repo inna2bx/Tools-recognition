@@ -1,4 +1,9 @@
 function out = compute_descriptors(image, mask)
+    
+    if max(mask(:)) == 0
+        [r,c] = size(mask);
+        mask = ones([r,c]);
+    end
   
     addpath('Descriptors');
     

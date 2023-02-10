@@ -24,9 +24,18 @@ for j = 1:n
             max_label = current_label;
         end
     end
+    
+    s = regionprops(max_label, "BoundingBox");
+    bboxe = floor(cat(1, s.BoundingBox));
+    if numel(bboxe) ~= 0
+        bboxe = bboxe+[1,1,-1,-1];
+        im_crop = imcrop(im, bboxe);
+        mask_crop = imcrop(max_label, bboxe);
 
-
-    d = compute_descriptors(im, max_label);
+        d = compute_descriptors(im_crop, mask_crop);
+    else
+        d = compute_descriptors(im, mask);
+    end
     descriptors(j) = d;
 end
 
@@ -41,4 +50,4 @@ test.images = images(test_list);
 test.labels = labels(test_list);
 test.descriptors = descriptors(test_list, :);
 
-save('Saved Data\trts.mat', "train", "test");
+%save('Saved Data\trts.mat', "train", "test");
