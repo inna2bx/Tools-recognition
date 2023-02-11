@@ -8,7 +8,7 @@ function out = compute_descriptors(image, mask)
     addpath('Descriptors');
     
     out.lbp = compute_lbp(rgb2gray(image));
-%     out.qhist = compute_qhist(image);
+    out.qhist = compute_qhist(image);
     out.cedd = compute_CEDD(image);
     
     out.areaMinRectangle = compute_areaMinRectangle(mask);

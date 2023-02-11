@@ -23,7 +23,7 @@ if(test>fac.*sz)
         sfondo = "piastrelle";
     end
 end
-%rmpath("Segmentation_subroutines\");
+rmpath("Segmentation_subroutines\");
 
 tmp = imresize(tmp,[r_original,c_original],"nearest");
 out = tmp;

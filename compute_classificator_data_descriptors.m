@@ -1,9 +1,9 @@
 clear all;
 close all;
 
-DATASET = "segmentable";
+DATASET = "knownBG";
 
-SAVE_SEGMENTATION = true;
+SAVE_SEGMENTATION = false;
 
 load('Saved Data\data_'+DATASET+'.mat');
 load('Saved Data\partition_'+DATASET+'.mat');

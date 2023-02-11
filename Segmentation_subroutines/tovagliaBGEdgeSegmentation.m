@@ -46,14 +46,7 @@ for i = 1:c
     end
 end
 
-labels = bwlabel(edges);
-nlabels = max(unique(labels));
-for i = 1:nlabels
-    ni = sum(sum(labels==i));
-    if ni<2000
-        edges(labels==i) = 0;
-    end
-end
+edges = bwareaopen(edges,2000);
 out = edges;
 
 

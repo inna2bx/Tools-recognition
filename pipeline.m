@@ -36,7 +36,8 @@ function out = pipeline(im)
         crop_mask = imcrop(labels == i, bboxes(i,:));
         d = struct2table(compute_descriptors(crop, crop_mask));
         
-        descriptors = {'lbp','cedd','qhist'};
+        descriptors = {'lbp','cedd','qhist', 'areaMinRectangle'...
+                    , 'areaOverPSquare', 'HuMoments', 'signature'};
         descriptors = table2array(d(:, descriptors));
 
         label_predict = predict(classificator, descriptors);

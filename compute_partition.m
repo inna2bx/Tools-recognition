@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-DATASET = "segmentable";
+DATASET = "knownBG";
 
 load('Saved Data\data_'+DATASET+'.mat');
 

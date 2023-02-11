@@ -10,7 +10,7 @@ save('Saved Data\data_multiobject.mat','images_multiobject');
 
 %extract and save one-object data from list files
 
-DATASET = "segmentable";
+DATASET = "knownBG";
 
 images = read_list_file('List Files\images_'+DATASET+'.list');
 labels = read_list_file('List Files\labels_'+DATASET+'.list');
