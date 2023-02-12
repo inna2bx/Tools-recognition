@@ -21,31 +21,39 @@ edges = imclose(edges,str);
 labels = bwlabel(edges);
 
 for i = 1:r
-    if sum(labels(i,1 : bx)) ~= 0
-        lab = labels(i,1);
-        edges(labels == lab) = 0;
-        labels(labels == lab) = 0;
+    for j = 1:bx
+        if labels(i,j) ~= 0
+            lab = labels(i,j);
+            edges(labels == lab) = 0;
+            labels(labels == lab) = 0;
+        end
     end
 end
 for i = 1:r
-    if sum(labels(i, c - bx : c)) ~= 0
-        lab = labels(i,c);
-        edges(labels == lab) = 0;
-        labels(labels == lab) = 0;
+    for j = c-bx:c
+        if labels(i,j) ~= 0
+            lab = labels(i,j);
+            edges(labels == lab) = 0;
+            labels(labels == lab) = 0;
+        end
     end
 end
 for i = 1:c
-    if sum(labels(1 : by,i)) ~= 0
-        lab = labels(1,i);
-        edges(labels == lab) = 0;
-        labels(labels == lab) = 0;
+    for j = 1:by
+        if labels(j,i) ~= 0
+            lab = labels(j,i);
+            edges(labels == lab) = 0;
+            labels(labels == lab) = 0;
+        end
     end
 end
 for i = 1:c
-    if sum(labels(r - by : r,i)) ~= 0
-        lab = labels(r,i);
-        edges(labels == lab) = 0;
-        labels(labels == lab) = 0;
+    for j = r-by:r
+        if labels(j,i) ~= 0
+            lab = labels(j,i);
+            edges(labels == lab) = 0;
+            labels(labels == lab) = 0;
+        end
     end
 end
 
