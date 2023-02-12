@@ -25,7 +25,7 @@ labels = bwlabel(ris,4);
 
 
 [r c] = size(labels);
-p = 0.005;
+p = 0.01;
 by = floor(r * p);
 bx = floor(c * p);
 for i = 1:r

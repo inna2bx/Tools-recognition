@@ -10,9 +10,9 @@ edges = not(edges);
 edges = imfill(edges, "holes");
 [r,c] = size(edges);
 
-p = 1;
-by = floor(r * p / 100);
-bx = floor(c * p / 100);
+p = 0.01;
+by = floor(r * p);
+bx = floor(c * p);
 
 str = strel("disk",15);
 edges = imdilate(edges,str);
@@ -61,4 +61,4 @@ edges = bwareaopen(edges,10000);
 
 out = edges;
 
-imshow(out);
+%imshow(out);

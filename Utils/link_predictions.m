@@ -23,7 +23,7 @@ function [labels,predicted_labels] = link_predictions(predictions,bboxes,gt)
         ratios = bboxOverlapRatio(gt_bboxes, bboxes(i,:));
         [m,indexMax] = max(ratios);
         predicted_labels(i) = predictions(i);
-        if m > 0.25
+        if m > 0.15
             labels(i) = gt_structure(indexMax).label;
             gt_structure(indexMax).linked = true;
         else
