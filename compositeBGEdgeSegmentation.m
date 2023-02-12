@@ -14,7 +14,7 @@ tmp = uniformBGEdgeSegmentation(gray);
 sfondo = "uniforme";
 test = sum(sum(tmp));
 fac = 50/100;
-if(test>fac.*sz)
+if(or(test>fac.*sz,test==0))
     tmp = tovagliaBGEdgeSegmentation(gray);
     test = sum(sum(tmp));
     sfondo = "tovaglia";

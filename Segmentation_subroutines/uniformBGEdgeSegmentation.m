@@ -8,7 +8,7 @@ labels = bwlabel(edges);
 
 [r c] = size(edges);
 
-p = 1;
+p = 0.5;
 by = floor(c * p / 100);
 bx = floor(r * p / 100);
 

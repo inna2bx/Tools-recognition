@@ -3,8 +3,8 @@ close all;
 
 %debug flags
 IOU = false;
-PRINT_SEGMENTATION = true;
-SAVE_SEGMENTATION = true;
+PRINT_SEGMENTATION = false;
+SAVE_SEGMENTATION = false;
 PRINT_CLASSIFICATION = true;
 SAVE_CLASSIFICATION = true;
 CLOSE_WINDOWS = true;

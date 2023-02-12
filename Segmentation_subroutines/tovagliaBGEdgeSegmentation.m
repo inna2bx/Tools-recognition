@@ -57,7 +57,8 @@ for i = 1:c
     end
 end
 
-edges = bwareaopen(edges,2000);
+edges = bwareaopen(edges,10000);
+
 out = edges;
 
-
+imshow(out);

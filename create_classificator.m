@@ -1,17 +1,20 @@
 clear all;
 close all;
 
-DATASET = "segmentable";
+rng(42);
+
+DATASET = "knownBG";
 
 addpath('Utils');
 load('Saved Data\trts_'+DATASET+'.mat');
 
 
-descriptors = {'lbp','cedd','qhist', 'areaMinRectangle'...
+descriptors = {'lbp','qhist','areaMinRectangle'...
     , 'areaOverPSquare', 'HuMoments', 'signature'};
 
 train_array_descriptors = table2array(train.descriptors(:, descriptors));
-classificator = fitcknn(train_array_descriptors, train.labels, 'NumNeighbors', 10);
+classificator = TreeBagger(120, train_array_descriptors, train.labels,...
+    OOBPrediction="on");
 
 
 train_predicted = predict(classificator, train_array_descriptors);
@@ -23,7 +26,7 @@ test_predicted = predict(classificator, test_array_descriptors);
 
 cm_test = confmat(test.labels, test_predicted);
 
-show_confmat(cm_test.cm_raw, cm_test.labels);
+show_confmat(cm_test.cm_raw, cm_test.labels), title(cm_test.accuracy);
 
 save('Saved Data\classificator.mat', 'classificator');
 
