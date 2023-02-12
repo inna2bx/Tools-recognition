@@ -61,10 +61,10 @@ labels = bwlabel(edges);
 nlabels = max(unique(labels));
 for i = 1:nlabels
     ni = sum(sum(labels==i));
-    if ni<2000
+    if ni<10000
         edges(labels==i) = 0;
     end
 end
 out = edges;
 
-
+imshow(out);
