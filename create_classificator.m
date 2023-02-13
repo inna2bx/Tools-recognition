@@ -9,12 +9,13 @@ addpath('Utils');
 load('Saved Data\trts_'+DATASET+'.mat');
 
 
-descriptors = {'lbp','qhist','areaMinRectangle'...
-    , 'areaOverPSquare', 'HuMoments', 'signature'};
+descriptors = {'lbp','qhist','cedd','areaMinRectangle'...
+    , 'areaOverPSquare'};
 
 train_array_descriptors = table2array(train.descriptors(:, descriptors));
 classificator = TreeBagger(120, train_array_descriptors, train.labels,...
     OOBPrediction="on");
+% classificator = fitctree(train_array_descriptors, train.labels, MaxNumSplits=100);
 
 
 train_predicted = predict(classificator, train_array_descriptors);

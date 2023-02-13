@@ -5,9 +5,9 @@ close all;
 IOU = false;
 PRINT_SEGMENTATION = false;
 SAVE_SEGMENTATION = false;
-PRINT_CLASSIFICATION = true;
-SAVE_CLASSIFICATION = true;
-CLOSE_WINDOWS = true;
+PRINT_CLASSIFICATION = false;
+SAVE_CLASSIFICATION = false;
+CLOSE_WINDOWS = false;
 
 %load data
 load('Saved Data\GT-multiobject.mat');
@@ -24,7 +24,7 @@ ratios_bboxes = zeros(1, n, 'double');
 dataset_labels = {};
 dataset_predicted_labels = {};
 
-for j = 1:n
+for j = 65:75
 
     disp(string(j)+' - '+string(n));
     

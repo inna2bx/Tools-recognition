@@ -3,7 +3,7 @@ close all;
 
 DATASET = "knownBG";
 
-SAVE_SEGMENTATION = false;
+SAVE_SEGMENTATION = true;
 
 load('Saved Data\data_'+DATASET+'.mat');
 load('Saved Data\partition_'+DATASET+'.mat');
