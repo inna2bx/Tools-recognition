@@ -9,8 +9,7 @@ addpath('Utils');
 load('Saved Data\trts_'+DATASET+'.mat');
 
 
-descriptors = {'lbp','qhist','cedd','areaMinRectangle'...
-    , 'areaOverPSquare'};
+descriptors = {'qhist','HuMoments'};
 
 train_array_descriptors = table2array(train.descriptors(:, descriptors));
 classificator = TreeBagger(120, train_array_descriptors, train.labels,...

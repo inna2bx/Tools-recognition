@@ -24,7 +24,7 @@ ratios_bboxes = zeros(1, n, 'double');
 dataset_labels = {};
 dataset_predicted_labels = {};
 
-for j = 65:75
+for j = 1:n
 
     disp(string(j)+' - '+string(n));
     
