@@ -2,17 +2,17 @@ function out = uniformBGEdgeSegmentation(gray)
 gray = medfilt2(gray,[15,15]);
 edges = edge(gray,"zerocross",0.0005);
 trs = strel("diamond",15);
-edges = imclose(edges,trs);
-edges = imfill(edges,"holes");
+edges = imclose(edges,trs);         %Connetto eventuali edge sconnessi
+edges = imfill(edges,"holes");      %Riempo gli edge chiusi trovati
 labels = bwlabel(edges);
 
 [r c] = size(edges);
 
-p = 0.01;
+p = 0.01;                           
 by = floor(c * p);
 bx = floor(r * p);
 
-for i = 1:r
+for i = 1:r                         %Rimozione componenti connesse vicine ai bordi
 
     for j = 1:bx
         if labels(i,j) ~= 0
@@ -49,6 +49,6 @@ for i = 1:c
     end
 end
 
-edges = bwareaopen(edges,3000);
+edges = bwareaopen(edges,3000);             %Rimonzione aree piccole
 
 out = edges;

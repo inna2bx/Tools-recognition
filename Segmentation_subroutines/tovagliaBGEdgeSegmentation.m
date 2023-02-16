@@ -2,12 +2,12 @@ function out = tovagliaBGEdgeSegmentation(gray)
 
 
 gray = medfilt2(gray,[15,15]);
-edges = edge(gray,"zerocross",0.0005);
+edges = edge(gray,"zerocross",0.0005);         %Rilevazione edge sfondo
 
 str = strel("disk",8);
-edges = imdilate(edges,str);
-edges = not(edges);
-edges = imfill(edges, "holes");
+edges = imdilate(edges,str);                   %Riempimento sfondo
+edges = not(edges);                            %Rimozione sfondo
+edges = imfill(edges, "holes");                %Riempimento di eventuali buchi
 [r,c] = size(edges);
 
 p = 0.01;
@@ -16,11 +16,11 @@ bx = floor(c * p);
 
 str = strel("disk",15);
 edges = imdilate(edges,str);
-edges = imclose(edges,str);
+edges = imclose(edges,str);                     %Connessione di eventuali parte sconnesse di oggetti
 
 labels = bwlabel(edges);
 
-for i = 1:r
+for i = 1:r                                     %Rimozione componenti connesse vicine ai bordi
     for j = 1:bx
         if labels(i,j) ~= 0
             lab = labels(i,j);
@@ -57,7 +57,7 @@ for i = 1:c
     end
 end
 
-edges = bwareaopen(edges,10000);
+edges = bwareaopen(edges,10000);                    %Rimozione aree piccole
 
 out = edges;
 
