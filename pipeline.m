@@ -36,16 +36,13 @@ function out = pipeline(im)
         crop_mask = imcrop(labels == i, bboxes(i,:));
         d = struct2table(compute_descriptors(crop, crop_mask));
         
-        descriptors = {'lbp','cedd','qhist', 'areaMinRectangle'...
-    , 'areaOverPSquare', 'HuMoments', 'signature'};
+        descriptors = {'qhist', 'HuMoments'};
         descriptors = table2array(d(:, descriptors));
 
         [label_predict, score] = predict(classificator, descriptors);
         
-%         delta = max(score) - mean(score);
-        score = sort(score, "descend");
-        delta = score(1) - score(2);
-        if delta < 0.00
+        delta = max(score) - mean(score);
+        if delta < 0.07
             label_predict = {'unknown'};
         end
         
