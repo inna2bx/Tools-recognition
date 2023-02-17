@@ -8,9 +8,6 @@ function out = pipeline(im)
     %load data
     
     load('Saved Data\classificator.mat');
-    
-    
-    %preprocessing
    
     
     %segmentation

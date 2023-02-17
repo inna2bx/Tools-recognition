@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-%%debug flags
+%%export flags
 
 %stampa alla fine dei tests lo scarto quadratico medio delle IoU delle 
 % bboxes trovate dalla segmentazione e le bboxes della GT di ogni immagine
