@@ -20,9 +20,11 @@ function out = pipeline(im)
     out.segmentation = mask;
     out.labels = labels;
     
-    %extrating bounding boxes
+    %extracting bounding boxes
     s = regionprops(labels, "BoundingBox");
     bboxes = floor(cat(1, s.BoundingBox));
+    %si fa una piccola riduzione delle bboxes per evitare problemi con 
+    %gli arrotondamenti
     if numel(bboxes) ~= 0
         bboxes = bboxes+[1,1,-1,-1];
     end
@@ -34,15 +36,15 @@ function out = pipeline(im)
     for i = 1:n_bboxes
         crop = imcrop(im, bboxes(i,:));
         crop_mask = imcrop(labels == i, bboxes(i,:));
-        d = struct2table(compute_descriptors(crop, crop_mask));
-        
-        descriptors = {'qhist', 'HuMoments'};
-        descriptors = table2array(d(:, descriptors));
+        descriptors = compute_descriptors(crop, crop_mask);
 
         [label_predict, score] = predict(classificator, descriptors);
         
+        %si imposta come unknown tutti quei oggetti che hanno uno score
+        %sulla classe prevista che non è molto maggiore degli score di
+        %tutte le altre classi
         delta = max(score) - mean(score);
-        if delta < 0.07
+        if delta < 0.08
             label_predict = {'unknown'};
         end
         

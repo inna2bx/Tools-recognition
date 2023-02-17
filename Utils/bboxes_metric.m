@@ -6,7 +6,8 @@ function  [IoU, ratio_bboxes] = bboxes_metric(bboxes, gt, im)
     
     gt_area = zeros(r,c, 'logical');
     n_gt_bboxes = 0;
-
+    
+    %segno ogni bbox trovata sull'immagine bboxes_area
     for i=1:n_bboxes
 
         [c] = bboxes(i,1);
@@ -18,6 +19,7 @@ function  [IoU, ratio_bboxes] = bboxes_metric(bboxes, gt, im)
 
     end
     
+    %segno ogni bbox della GT sull'immagine gt_area
     cell_array = table2cell(gt);
     for i=1:numel(cell_array)
         gt_class_bboxes_mat = cell2mat(cell_array(i));
@@ -33,7 +35,8 @@ function  [IoU, ratio_bboxes] = bboxes_metric(bboxes, gt, im)
         end
     end
     
-
+    %calcolo IoU e il rapporto di bboxes trovate su bboxes annotate nella
+    %GT
     union = or(bboxes_area, gt_area);
     intersection = and(bboxes_area, gt_area);
     

@@ -1,21 +1,33 @@
 clear all;
 close all;
 
-%debug flags
-IOU = false;
+%%debug flags
+
+%stampa alla fine dei tests lo scarto quadratico medio delle IoU delle 
+% bboxes trovate dalla segmentazione e le bboxes della GT di ogni immagine
+IOU = false; 
+
+%stampa a video la segmentazione e le labels ottenute per ogni immagine
 PRINT_SEGMENTATION = false;
+%salva nella cartella export la precedente stampa
 SAVE_SEGMENTATION = false;
+
+%stampa a video un immagine contenente gli oggetti trovati con la classe
+%stimata dalla segmentazione
 PRINT_CLASSIFICATION = false;
+%salva nella cartella export la precedente stampa
 SAVE_CLASSIFICATION = false;
+
+%chiude tutte le finestre aperte alla fine di ogni iterazione della pipline
 CLOSE_WINDOWS = false;
 
-%load data
+%%load data
 load('Saved Data\GT-multiobject.mat');
 load("Saved Data\data_multiobject.mat");
 
 addpath('Utils\');
 
-%process data
+%%process data
 n = numel(images_multiobject);
 
 IoUs = zeros(1, n, 'double');

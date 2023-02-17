@@ -1,5 +1,7 @@
-function out = compute_descriptors(image, mask)
+function descriptors = compute_descriptors(image, mask)
     
+    %se viene passata una maschera vuota si considera come se la maschera
+    %fosse stata piena solo di 1
     if max(mask(:)) == 0
         [r,c] = size(mask);
         mask = ones([r,c]);
@@ -7,15 +9,15 @@ function out = compute_descriptors(image, mask)
   
     addpath('Descriptors');
     
-    out.lbp = compute_lbp(rgb2gray(image));
-    out.qhist = compute_qhist(image);
+%     lbp = compute_lbp(rgb2gray(image));
+    qhist = compute_qhist(image);
     
-    out.areaMinRectangle = compute_areaMinRectangle(mask);
-    out.areaOverPSquare = compute_areaOverPSquare(mask);
-    out.HuMoments = compute_HuMoments(mask);
-    out.signature = compute_signature(mask); 
+%     areaMinRectangle = compute_areaMinRectangle(mask);
+%     areaOverPSquare = compute_areaOverPSquare(mask);
+    HuMoments = compute_HuMoments(mask);
+%     signature = compute_signature(mask); 
     
-    out.descriptors = struct2array(out);
+    descriptors = [qhist,HuMoments];
 
 
     
